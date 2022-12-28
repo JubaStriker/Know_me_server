@@ -13,6 +13,25 @@ app.use(express.json());
 const uri = process.env.DB_USER;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
+async function run() {
+    try {
+        const usersCollection = client.db('KnowMe').collection('users');
+
+
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            const result = await usersCollection.insertOne(user);
+            res.send(result);
+        })
+    }
+
+    finally {
+
+    }
+}
+
+run().catch(console.log);
+
 
 
 app.get('/', async (req, res) => {
