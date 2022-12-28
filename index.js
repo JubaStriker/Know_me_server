@@ -23,6 +23,36 @@ async function run() {
             const result = await usersCollection.insertOne(user);
             res.send(result);
         })
+
+        app.get('/users', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email }
+            const result = await usersCollection.findOne(query);
+            res.send(result);
+        })
+
+        app.put('/users', async (req, res) => {
+            const filterEmail = req.query.email;
+            const filter = { email: filterEmail }
+            const user = req.body;
+            const { name, email, gender, age, hometown, relationshipStatus, profilePicture, education } = user
+            const options = { upsert: true }
+            const updatedDoc = {
+                $set: {
+                    name: name,
+                    email: email,
+                    gender: gender,
+                    age: age,
+                    hometown: hometown,
+                    relationshipStatus: relationshipStatus,
+                    profilePicture: profilePicture,
+                    education: education
+
+                }
+            }
+            const result = await usersCollection.updateOne(filter, updatedDoc, options)
+            res.send(result);
+        })
     }
 
     finally {
