@@ -63,7 +63,6 @@ async function run() {
 
         app.post('/post', async (req, res) => {
             const post = req.body;
-            console.log(post);
             const result = await postsCollection.insertOne(post);
             res.send(result);
         })
@@ -86,11 +85,6 @@ async function run() {
             const result = await postsCollection.updateOne(filter, updatedDoc, options)
             res.send(result);
         })
-        // console.log(comment);
-        // const result = await postsCollection.updateOne(
-        //     { _id: _id },
-        //     { $push: { comment: { $each: [{ text: comment.text, commenter: comment.commenter, commenterPhoto: comment.commenterPhoto }] } } }
-        // )
     }
 
     finally {
