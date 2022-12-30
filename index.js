@@ -61,6 +61,13 @@ async function run() {
             res.send(result);
         })
 
+        app.get('/post/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await postsCollection.findOne(query);
+            res.send(result);
+        })
+
         app.post('/post', async (req, res) => {
             const post = req.body;
             const result = await postsCollection.insertOne(post);
@@ -82,6 +89,20 @@ async function run() {
                 }
             }
 
+            const result = await postsCollection.updateOne(filter, updatedDoc, options)
+            res.send(result);
+        })
+
+        app.put('/like/:id', async (req, res) => {
+            const like = req.body.like;
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true }
+            const updatedDoc = {
+                $set: {
+                    like: like
+                }
+            }
             const result = await postsCollection.updateOne(filter, updatedDoc, options)
             res.send(result);
         })
